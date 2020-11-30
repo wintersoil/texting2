@@ -34,31 +34,43 @@ public class Handler implements RequestHandler<Object, String>
         	hm.put("14164567666", "Ian Cheung");
         	LambdaLogger logger = context.getLogger();
             String wholeObjectAsString = gson.toJson(obj1);
-            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("Parameters"));
-            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("phone"));
-            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("+"));
-            String phoneNumber = wholeObjectAsString.substring(wholeObjectAsString.indexOf("+") + 1,wholeObjectAsString.indexOf("\""));
-            wholeObjectAsString = gson.toJson(obj1);
-            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("Parameters"));
-            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("option"));
-            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("\"") + 1);
-            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("\"") + 1);
-            String option = wholeObjectAsString.substring(0,wholeObjectAsString.indexOf("\""));
-            wholeObjectAsString = gson.toJson(obj1);
-            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("Parameters"));
-            String name = "";
-            if(wholeObjectAsString.indexOf("name") >= 0)
+            if(wholeObjectAsString.indexOf("Parameters") > 0)
             {
-            	wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("name"));
-            	wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("\"") + 1);
-            	wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("\"") + 1);
-            	name = wholeObjectAsString.substring(0,wholeObjectAsString.indexOf("\""));
+	            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("Parameters"));
+	            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("phone"));
+	            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("+"));
+	            String phoneNumber = wholeObjectAsString.substring(wholeObjectAsString.indexOf("+") + 1,wholeObjectAsString.indexOf("\""));
             }
-            else
+            wholeObjectAsString = gson.toJson(obj1);
+            if(wholeObjectAsString.indexOf("Parameters") > 0)
             {
-            	name = hm.get(phoneNumber);
-            	if(name == null)
-            		name = "Customer";
+	            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("Parameters"));
+	            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("option"));
+	            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("\"") + 1);
+	            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("\"") + 1);
+	            String option = wholeObjectAsString.substring(0,wholeObjectAsString.indexOf("\""));
+            }
+            wholeObjectAsString = gson.toJson(obj1);
+            String phoneNumber = "";
+            String option = "";
+            String name = "";
+            if(wholeObjectAsString.indexOf("Parameters") > 0)
+            {
+	            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("Parameters"));
+	            name = "";
+	            if(wholeObjectAsString.indexOf("name") >= 0)
+	            {
+	            	wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("name"));
+	            	wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("\"") + 1);
+	            	wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("\"") + 1);
+	            	name = wholeObjectAsString.substring(0,wholeObjectAsString.indexOf("\""));
+	            }
+	            else
+	            {
+	            	name = hm.get(phoneNumber);
+	            	if(name == null)
+	            		name = "Customer";
+	            }
             }
             TextBody tb1 = new TextBody();
             tb1.setPhone(phoneNumber);
