@@ -43,6 +43,7 @@ public class Handler implements RequestHandler<Object, String>
 	            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("phone"));
 	            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("+"));
 	            phoneNumber = wholeObjectAsString.substring(wholeObjectAsString.indexOf("+") + 1,wholeObjectAsString.indexOf("\""));
+	            logger.log(phoneNumber);
             }
             wholeObjectAsString = gson.toJson(obj1);
             if(wholeObjectAsString.indexOf("Parameters") > 0)
@@ -52,6 +53,7 @@ public class Handler implements RequestHandler<Object, String>
 	            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("\"") + 1);
 	            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("\"") + 1);
 	            option = wholeObjectAsString.substring(0,wholeObjectAsString.indexOf("\""));
+	            logger.log(option);
             }
             wholeObjectAsString = gson.toJson(obj1);
 
@@ -65,6 +67,7 @@ public class Handler implements RequestHandler<Object, String>
 	            	wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("\"") + 1);
 	            	wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("\"") + 1);
 	            	name = wholeObjectAsString.substring(0,wholeObjectAsString.indexOf("\""));
+	            	logger.log(name);
 	            }
 	            else
 	            {
@@ -88,17 +91,17 @@ public class Handler implements RequestHandler<Object, String>
             final DataOutputStream wr = new DataOutputStream(con.getOutputStream());
             wr.writeBytes(jsonString);
             wr.close();
-            final int status = con.getResponseCode();
-            final BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            final StringBuffer content = new StringBuffer();
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
-            }
-            in.close();
+//            final int status = con.getResponseCode();
+//            final BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+//            final StringBuffer content = new StringBuffer();
+//            String inputLine;
+//            while ((inputLine = in.readLine()) != null) {
+//                content.append(inputLine);
+//            }
+//            in.close();
             con.disconnect();
         }
-        catch (IOException e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return response;
