@@ -1,10 +1,7 @@
 
 package example;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+
 import java.io.DataOutputStream;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.HttpURLConnection;
@@ -20,23 +17,22 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 public class Handler implements RequestHandler<Object, String>
 {
     Gson gson;
-    
-    public Handler() {
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
-    }
     @Override
     public String handleRequest(Object obj1, final Context context) {
-        final String response = new String("200 OK");
+    	this.gson = new GsonBuilder().setPrettyPrinting().create();
+    	LambdaLogger logger = context.getLogger();
+        TextBody tb1 = new TextBody();
         try {
         	HashMap<String, String> hm = new HashMap<String, String>();
         	hm.put("16479956601", "Junaid Ikram");
         	hm.put("14372466992", "Ali Usmani");
         	hm.put("14164567666", "Ian Cheung");
-        	LambdaLogger logger = context.getLogger();
+        	
             String wholeObjectAsString = gson.toJson(obj1);
             String phoneNumber = "";
             String option = "";
             String name = "";
+            logger.log("Hey this is a clown");
             if(wholeObjectAsString.indexOf("Parameters") > 0)
             {
 	            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("Parameters"));
@@ -45,7 +41,9 @@ public class Handler implements RequestHandler<Object, String>
 	            phoneNumber = wholeObjectAsString.substring(wholeObjectAsString.indexOf("+") + 1,wholeObjectAsString.indexOf("\""));
 	            logger.log(phoneNumber);
             }
+            logger.log("Hey parsing to gson string");
             wholeObjectAsString = gson.toJson(obj1);
+            logger.log("Hey parsing to gson string done");
             if(wholeObjectAsString.indexOf("Parameters") > 0)
             {
 	            wholeObjectAsString = wholeObjectAsString.substring(wholeObjectAsString.indexOf("Parameters"));
@@ -56,6 +54,7 @@ public class Handler implements RequestHandler<Object, String>
 	            logger.log(option);
             }
             wholeObjectAsString = gson.toJson(obj1);
+            logger.log("Hey parsing to gson string done more");
 
             if(wholeObjectAsString.indexOf("Parameters") > 0)
             {
@@ -72,26 +71,35 @@ public class Handler implements RequestHandler<Object, String>
 	            else
 	            {
 	            	name = hm.get(phoneNumber);
+	            	logger.log(name + " 7 From Dict");
 	            	if(name == null)
 	            		name = "Customer";
 	            }
             }
-            TextBody tb1 = new TextBody();
+            logger.log("Hey there it is 1");
+
             tb1.setPhone(phoneNumber);
             tb1.setOption(option);
             tb1.setName(name);
+            tb1.setStatus("success");
+            logger.log("Hey there it is 2");
             final URL url = new URL("https://hooks-us.imiconnect.io/events/FM1Q1OHFCM");
             final HttpURLConnection con = (HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);
             con.setRequestProperty("Content-Type", "application/json");
             con.setRequestProperty("Key", "M2I1Y2U1YmRiYjYxNDRiYWIyNTUxMzkxN2JjOTQ3");
+            logger.log("Hey there it is 3");
             final ObjectMapper mapper = new ObjectMapper();
             final String jsonString = mapper.writeValueAsString((Object)tb1);
+            logger.log("Hey there it is 4");
             final DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            logger.log("Hey there it is 5");
             wr.writeBytes(jsonString);
             wr.close();
-//            final int status = con.getResponseCode();
+            logger.log("Hey there it is 6");
+            final int status = con.getResponseCode();
+            logger.log("Hey there it is 7");
 //            final BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 //            final StringBuffer content = new StringBuffer();
 //            String inputLine;
@@ -100,11 +108,14 @@ public class Handler implements RequestHandler<Object, String>
 //            }
 //            in.close();
             con.disconnect();
+            logger.log("Hey there it is 8");
         }
         catch (Exception e) {
+        	logger.log("In exception");
+        	logger.log(e.getMessage());
             e.printStackTrace();
         }
-        return response;
+        return gson.toJson(tb1);
     }
 
 
