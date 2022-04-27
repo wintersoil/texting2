@@ -24,9 +24,8 @@ public class Handler implements RequestHandler<Object, String>
         TextBody tb1 = new TextBody();
         try {
         	HashMap<String, String> hm = new HashMap<String, String>();
-        	hm.put("16479956601", "Junaid Ikram");
+        	hm.put("16479956601", "Jay Ikram");
         	hm.put("14372466992", "Ali Usmani");
-        	hm.put("14164567666", "Ian Cheung");
         	
             String wholeObjectAsString = gson.toJson(obj1);
             String phoneNumber = "";
@@ -83,7 +82,7 @@ public class Handler implements RequestHandler<Object, String>
             tb1.setName(name);
             tb1.setStatus("success");
             logger.log("Hey there it is 2");
-            final URL url = new URL("https://hooks-us.imiconnect.io/events/FM1Q1OHFCM");
+            final URL url = new URL("https://hooks-sandbox.imiconnect.io/events/2QZXI2QXQG");
             final HttpURLConnection con = (HttpURLConnection)url.openConnection();
             con.setRequestMethod("POST");
             con.setDoOutput(true);
